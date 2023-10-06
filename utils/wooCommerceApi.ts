@@ -1,4 +1,6 @@
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
+import { Order } from "./wooCommerceTypes";
+
 
 // initialise the WooCommerceRestApi //
 const api = new WooCommerceRestApi({
@@ -16,3 +18,23 @@ export async function fetchWooCommerceProducts() {
     throw new Error(error as string);
   }
 }
+
+export async function fetchWooCommerceOrders(){
+  try {
+    const response = await api.get("orders");
+    return response;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+}
+
+// create new WooCommerce order by passing in required data object //
+export async function createWooCommerceOrder(data: Order) {
+  try {
+    const response = await api.post("orders", data);
+    return response;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+}
+
