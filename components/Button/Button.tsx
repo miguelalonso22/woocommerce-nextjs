@@ -32,8 +32,9 @@ const StyledButton = styled.button<Props>`
       : props.theme.colors.primary};
   color: ${(props) => props.theme.colors.lightText};
   transition: background-color 0.2s ease;
-  padding: 10px 20px;
-  margin-left: 12px;
+  // padding: 10px 20px;
+  padding: 10px;
+  margin-left: 15px;
 `;
 
  

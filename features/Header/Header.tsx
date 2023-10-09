@@ -5,7 +5,7 @@ import Navbar from "../../containers/Navbar/Navbar";
 const Header = () => {
   return (
     <Wrapper>
-      <Heading textAlign="center">The Candy Shop</Heading>
+      <Heading textAlign="center">Tienda | CervezaTodos</Heading>
       <Navbar />
     </Wrapper>
   );

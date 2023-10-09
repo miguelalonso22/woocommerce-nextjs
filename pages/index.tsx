@@ -42,7 +42,7 @@ export default function Home({ products, orders }: Props) {
     ],
   };
 
-  // console.log("--WooCommerce Products: ", products);
+  console.log("--WooCommerce Products: ", products);
   // console.log("--WooCommerce Orders: ", orders);
 
   function handleClick() {
@@ -73,21 +73,22 @@ export default function Home({ products, orders }: Props) {
 export const getStaticProps: GetStaticProps = async () => {
   const wooCommerceProducts = await fetchWooCommerceProducts().catch((error) =>
     console.error(error)
-  );
-  const wooCommerceOrders = await fetchWooCommerceOrders().catch((error) =>
-    console.error(error)
-  );
+);
+  // const wooCommerceOrders = await fetchWooCommerceOrders().catch((error) =>
+  //   console.error(error)
+  // );
 
-  if (!wooCommerceProducts || !wooCommerceOrders) {
+  if (!wooCommerceProducts 
+    // || !wooCommerceOrders
+    ) {
     return {
       notFound: true,
     };
   }
-
   return {
     props: {
       products: wooCommerceProducts.data,
-      orders: wooCommerceOrders.data,
+      // orders: wooCommerceOrders.data,
     },
     // revalidate: 60 // regenerate page with new data fetch after 60 seconds
   };

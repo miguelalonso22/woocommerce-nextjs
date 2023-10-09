@@ -25,8 +25,8 @@ const ProductCardInfo = (props: Props) => {
         <span>${props.price}</span>
       </SpanContainer>
       <Fragment>
-        <Button onClickFunction={handleClick} isClicked={isClicked} className="cart-btn">
-          ADD TO CART
+        <Button onClickFunction={handleClick} isClicked={isClicked}>
+          AGREGAR AL CARRITO
         </Button>
       </Fragment>
     </Wrapper>

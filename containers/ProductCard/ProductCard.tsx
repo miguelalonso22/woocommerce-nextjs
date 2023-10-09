@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import Image from "next/image";
 import { Product } from "../../utils/wooCommerceTypes";
-// import { useAppDispatch } from "../../store/hooks";
-// import { addLineItem } from "../../store/slices/cartSlice";
+import { useAppDispatch } from "../../store/hooks";
+import { addLineItem } from "../../store/slices/cartSlice";
 import { ProductCardInfo } from "../../components";
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 const ProductCard = (props: Props) => {
   const { product } = props;
 
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const lineItem = {
     name: product.name,
@@ -22,8 +22,7 @@ const ProductCard = (props: Props) => {
   };
 
   const handleIncrement = () => {
-    console.log("Click happened");
-    // dispatch(addLineItem(lineItem));
+    dispatch(addLineItem(lineItem));
   };
 
   return (
@@ -34,6 +33,7 @@ const ProductCard = (props: Props) => {
           alt={product.images[0].alt}
           layout="fill"
           objectFit="cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </ImageContainer>
       <ProductCardInfo
@@ -49,10 +49,16 @@ export default ProductCard;
 
 const Card = styled.div`
   width: 100%;
+  // border: 1px solid #eaeaea;
+  border-radius: 2rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
 const ImageContainer = styled.div`
   position: relative;
   width: 100%;
+  overflow: hidden;
   padding-bottom: 100%;
+  border: 1px solid #eaeaea;
+  border-radius: 2rem 2rem 0 0;
 `;
