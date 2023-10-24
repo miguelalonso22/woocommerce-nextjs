@@ -20,7 +20,6 @@ const ProductCard = (props: Props) => {
     quantity: 1,
     price: product.regular_price,
   };
-
   const handleIncrement = () => {
     dispatch(addLineItem(lineItem));
   };
@@ -38,7 +37,7 @@ const ProductCard = (props: Props) => {
       </ImageContainer>
       <ProductCardInfo
         name={product.name}
-        price={product.price}
+        price={product.regular_price}
         onClickFunction={handleIncrement}
       />
     </Card>
@@ -51,7 +50,7 @@ const Card = styled.div`
   width: 100%;
   // border: 1px solid #eaeaea;
   border-radius: 2rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 `;
 
 const ImageContainer = styled.div`

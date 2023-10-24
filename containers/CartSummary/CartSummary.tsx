@@ -14,7 +14,7 @@ const CartSummary = (props: Props) => {
       return parseFloat(lineItem.price!) * 100 * lineItem.quantity;
     });
     const total = totalsArray.reduce((prev, next) => prev + next);
-    const formattedTotal = `£${(total / 100).toFixed(2)}`;
+    const formattedTotal = `$${(total / 100).toFixed(2)}`;
     return formattedTotal;
   }
 

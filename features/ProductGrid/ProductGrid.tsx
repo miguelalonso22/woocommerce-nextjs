@@ -28,10 +28,15 @@ const Grid = styled.div`
   padding: 16px;
   padding-top: 5%;
   padding-bottom: 7%;
-  @media (max-width: 855px) {
+  @media (max-width: 919px) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media (max-width: 570px) {
+  @media (max-width: 619px) {
     grid-template-columns: repeat(1, 1fr);
+    padding-left: 5%;
+    padding-right: 5%;
+
   }
+  max-width: 1200px;
+  margin: 0 auto;
 `;

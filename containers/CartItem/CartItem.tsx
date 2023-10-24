@@ -20,6 +20,7 @@ const calculatePrice = (quantity: number, price: string) => {
 };
 
 const CartItem = (props: Props) => {
+  // console.log(props.lineItem);
   const dispatch = useAppDispatch();
 
   // copy lineItem object and set the quantity to 1 so only incrementing/decrementing by 1
@@ -48,7 +49,7 @@ const CartItem = (props: Props) => {
         incrementFunction={increment}
       />
       <div>
-        £{calculatePrice(props.lineItem.quantity, props.lineItem.price!)}
+        ${calculatePrice(props.lineItem.quantity, props.lineItem.price!)}
       </div>
     </Wrapper>
   );
@@ -81,4 +82,5 @@ const Wrapper = styled.div`
       text-align: right;
     }
   }
+  border: 1px solid red;
 `;

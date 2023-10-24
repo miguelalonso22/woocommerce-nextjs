@@ -9,6 +9,7 @@ interface Props {
 }
 
 const ProductCardInfo = (props: Props) => {
+  // console.log(props)
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -51,6 +52,7 @@ const SpanContainer = styled.div`
   span {
     display: flex;
     align-items: center;
+    width: 100%;
   }
 `;
 

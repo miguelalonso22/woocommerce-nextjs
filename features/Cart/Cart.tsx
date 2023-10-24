@@ -11,6 +11,7 @@ interface Props {
 
 const Cart = (props: Props) => {
   const { lineItems } = props;
+  // console.log(lineItems);
   const router = useRouter();
 
   const createCart = (lineItems: LineItem[]) => {
