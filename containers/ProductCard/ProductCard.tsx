@@ -23,10 +23,13 @@ const ProductCard = (props: Props) => {
   const handleIncrement = () => {
     dispatch(addLineItem(lineItem));
   };
+  const DEFAULT_IMAGE_SRC = "/../images/Noimage1.png";
+  // const DEFAULT_IMAGE_ALT = "Placeholder Image";
 
   return (
     <Card>
       <ImageContainer>
+      {product.images && product.images.length > 0 ? (
         <Image
           src={product.images[0].src}
           alt={product.images[0].alt}
@@ -34,6 +37,15 @@ const ProductCard = (props: Props) => {
           objectFit="cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
+      ) : ( // Replace with your default image or placeholder component
+      <Image
+          src={DEFAULT_IMAGE_SRC}
+          alt={"Placeholder Image"}
+          layout="fill"
+          objectFit="cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+    )}
       </ImageContainer>
       <ProductCardInfo
         name={product.name}

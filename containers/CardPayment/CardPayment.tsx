@@ -1,18 +1,7 @@
 import styled from "styled-components";
-// import {
-//   CardNumberElement,
-//   CardExpiryElement,
-//   CardCvcElement,
-//   useStripe,
-//   useElements,
-// } from "@stripe/react-stripe-js";
 import { CTA, Modal } from "../../components";
 import React, { Fragment, useState } from "react";
-// import {
-//   StripeCardCvcElementChangeEvent,
-//   StripeCardExpiryElementChangeEvent,
-//   StripeCardNumberElementChangeEvent,
-// } from "@stripe/stripe-js";
+import Cookies from 'js-cookie';
 
 import { 
   createOrderApi, 
@@ -20,10 +9,7 @@ import {
 } from "../../utils/customApi";
 
 import { LineItem } from "../../utils/wooCommerceTypes";
-// import {
-//   checkStripeElementsValid,
-//   confirmCardPayment,
-// } from "../../utils/stripeApi";
+
 import { useAppDispatch } from "../../store/hooks";
 import { resetCartState } from "../../store/slices/cartSlice";
 import { useRouter } from "next/router";
@@ -31,10 +17,8 @@ import { useRouter } from "next/router";
 interface Props {
   lineItems: LineItem[];
 }
-
 const CardPayment = (props: Props) => {
-  // const stripe = useStripe();
-  // const elements = useElements();
+
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -47,34 +31,13 @@ const CardPayment = (props: Props) => {
     // guard clause to exit if nothing in cart
     if (!props.lineItems.length) return;
 
-    // guard clause to exit if no stripe or elements
-    // if (!stripe || !elements) return;
-
     // set loading indicator
     setIsLoading(true);
 
-    // check if Stripe elements are valid
-    // if (!checkStripeElementsValid()) {
-    //   setError("Uh oh. Please check your card details again");
-    //   return;
-    // }
-
     setError("");
 
-    // // create Stripe payment intent and get client secret in return
-    // let paymentIntent = await createPaymentIntentApi(props.lineItems).catch(
-    //   (error) => {
-    //     setError(error.message);
-    //     setIsLoading(false);
-    //     return;
-    //   }
-    // );
-    // console.log("--CREATED STRIPE PAYMENT INTENT: ", paymentIntent);
-
-    // create WooCommerce order and link it with Stripe payment intent
-    // NOTE: must create server-side because of env vars
     let wooCommerceOrder = await createOrderApi(
-      props.lineItems,
+      props.lineItems
       // paymentIntent!.paymentIntentId
     )    
     .catch((error) => {
@@ -82,47 +45,32 @@ const CardPayment = (props: Props) => {
       setIsLoading(false);
       return;
     });
+    console.log("--LineItems: ", props.lineItems);
     console.log("--CREATED WOOCOMMERCE ORDER: ", wooCommerceOrder);
-
-    // confirm card payment using client secret
-    // let stripeResult = await confirmCardPayment(
-    //   elements,
-    //   stripe,
-    //   paymentIntent!.clientSecret
-    // ).catch((error) => {
-    //   setError(error.message);
-    //   setIsLoading(false);
-    //   return;
-    // });
-    // console.log("--STRIPE CONFIRM CARD: ", stripeResult);
-
-    // TODO use wooCommerceOrder.id to update order status to 'processing' after card payment succeeded - this step would be achieved by webhook when website served over https
+    // const orderKey = wooCommerceOrder.order.order_key;
+    // const orderNumber = wooCommerceOrder.order.number;
+    
+    // Antes de la redirección
+    // dispatch(setOrderDetails({
+    //   orderKey: wooCommerceOrder.order.order_key,
+    //   orderNumber: wooCommerceOrder.order.number
+    // }));
+    Cookies.set('order_key', wooCommerceOrder.order.order_key);
+    Cookies.set('order_number', wooCommerceOrder.order.number);
+    // localStorage.setItem('order_key', wooCommerceOrder.order.order_key);
+    // localStorage.setItem('order_number', wooCommerceOrder.order.number);
 
     setIsLoading(false);
-
-    // TODO display success modal and clear Redux and re-direct when closing modal
 
     // clear Redux cart
     dispatch(resetCartState());
 
-    // re-direct to menu
-    // router.push("/");
+ 
     window.location.href = wooCommerceOrder.order.payment_url;
+    // window.location.href = `${wooCommerceOrder.order.payment_url}?order_key=${orderKey}&order_number=${orderNumber}`;
+
   };
 
-  // Enables realtime error message as user inputs card details
-  // function handleValidation(
-  //   e:
-  //     | StripeCardNumberElementChangeEvent
-  //     | StripeCardExpiryElementChangeEvent
-  //     | StripeCardCvcElementChangeEvent
-  // ) {
-  //   if (e.error) {
-  //     setError(e.error.message);
-  //   } else {
-  //     setError("");
-  //   }
-  // }
 
   return (
     <Fragment>
@@ -136,26 +84,7 @@ const CardPayment = (props: Props) => {
         )}
       </p>
       <Form id="card-payment-form" onClick={handleFormSubmit}>
-        {/* <CardNumberElement
-          id="card-number-element"
-          className="card-element"
-          options={CARD_NUMBER_OPTIONS}
-          onChange={handleValidation}
-        />
-        <Row>
-          <CardExpiryElement
-            id="card-expiry-element"
-            className="card-element"
-            options={CARD_ELEMENT_OPTIONS}
-            onChange={handleValidation}
-          />
-          <CardCvcElement
-            id="card-cvc-element"
-            className="card-element"
-            options={CARD_ELEMENT_OPTIONS}
-            onChange={handleValidation}
-          />
-        </Row> */}
+
         <CTA type="submit" disabled={!props.lineItems.length}>
           Pagar ahora
         </CTA>

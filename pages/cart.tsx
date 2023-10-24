@@ -4,7 +4,7 @@ import { Cart } from "../features";
 
 export default function CartPage() {
   const cartState = useAppSelector((state) => state.cart);
-  console.log(cartState.lineItems);
+  // console.log(cartState.lineItems);
 
   return (
     <NavLayout title="Cart" description="Cart">

@@ -10,6 +10,7 @@ import { useAppSelector } from "../store/hooks";
 
 export default function Checkout() {
   const lineItems = useAppSelector((state) => state.cart.lineItems);
+  // console.log(lineItems)
 
   return (
     <NavLayout title="Checkout" description="Checkout">

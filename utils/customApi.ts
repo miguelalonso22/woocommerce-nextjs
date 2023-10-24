@@ -40,9 +40,10 @@ export async function createOrderApi(
       }
     ],
   };
-
+  console.log("data", data);
   try {
     const response = await instance.post("create-order", data);
+    console.log("response", response);
     return response.data as Order;
   } catch (err) {
     throw new Error(err);
