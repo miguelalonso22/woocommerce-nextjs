@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { CTA, Modal } from "../../components";
 import React, { Fragment, useState } from "react";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
-import { 
-  createOrderApi, 
-  // createPaymentIntentApi 
+import {
+  createOrderApi,
+  // createPaymentIntentApi
 } from "../../utils/customApi";
 
 import { LineItem } from "../../utils/wooCommerceTypes";
@@ -18,7 +18,6 @@ interface Props {
   lineItems: LineItem[];
 }
 const CardPayment = (props: Props) => {
-
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -36,41 +35,30 @@ const CardPayment = (props: Props) => {
 
     setError("");
 
-    let wooCommerceOrder = await createOrderApi(
-      props.lineItems
-      // paymentIntent!.paymentIntentId
-    )    
-    .catch((error) => {
-      setError(error.message);
-      setIsLoading(false);
-      return;
-    });
+    let wooCommerceOrder = await createOrderApi(props.lineItems).catch(
+      (error) => {
+        setError(error.message);
+        setIsLoading(false);
+        return;
+      }
+    );
     console.log("--LineItems: ", props.lineItems);
     console.log("--CREATED WOOCOMMERCE ORDER: ", wooCommerceOrder);
-    // const orderKey = wooCommerceOrder.order.order_key;
-    // const orderNumber = wooCommerceOrder.order.number;
-    
-    // Antes de la redirección
-    // dispatch(setOrderDetails({
-    //   orderKey: wooCommerceOrder.order.order_key,
-    //   orderNumber: wooCommerceOrder.order.number
-    // }));
-    Cookies.set('order_key', wooCommerceOrder.order.order_key);
-    Cookies.set('order_number', wooCommerceOrder.order.number);
-    // localStorage.setItem('order_key', wooCommerceOrder.order.order_key);
-    // localStorage.setItem('order_number', wooCommerceOrder.order.number);
-
+    if (wooCommerceOrder && wooCommerceOrder.order_key) {
+      Cookies.set("order_key", wooCommerceOrder.order_key);
+    }
+    if (wooCommerceOrder && wooCommerceOrder.number) {
+      Cookies.set("order_number", wooCommerceOrder.number);
+    }
     setIsLoading(false);
 
     // clear Redux cart
     dispatch(resetCartState());
 
- 
-    window.location.href = wooCommerceOrder.order.payment_url;
-    // window.location.href = `${wooCommerceOrder.order.payment_url}?order_key=${orderKey}&order_number=${orderNumber}`;
-
+    if (wooCommerceOrder && wooCommerceOrder.payment_url) {
+      window.location.href = wooCommerceOrder.payment_url;
+    }
   };
-
 
   return (
     <Fragment>
@@ -84,7 +72,6 @@ const CardPayment = (props: Props) => {
         )}
       </p>
       <Form id="card-payment-form" onClick={handleFormSubmit}>
-
         <CTA type="submit" disabled={!props.lineItems.length}>
           Pagar ahora
         </CTA>

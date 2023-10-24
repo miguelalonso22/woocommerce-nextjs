@@ -240,6 +240,7 @@ export interface Order {
   shipping?: Shipping;
   payment_method: string;
   payment_method_title: string;
+  payment_url?: string;
   transaction_id?: string;
   date_paid?: Date;
   date_paid_gmt?: Date;

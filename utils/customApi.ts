@@ -21,7 +21,6 @@ const instance = axios.create({
 // hits the create-order API endpoint to create a new WooCommerce order //
 export async function createOrderApi(
   lineItems: LineItem[],
-  // paymentIntentId: string
 ) {
   // create order data
   const data: Order = {
@@ -30,10 +29,7 @@ export async function createOrderApi(
     set_paid: false,
     line_items: lineItems,
     meta_data: [
-      // {
-      //   key: "_stripe_intent_id",
-      //   value: paymentIntentId,
-      // },
+
       {
         key: "is_production_mode",
         value: "no",
@@ -44,18 +40,9 @@ export async function createOrderApi(
   try {
     const response = await instance.post("create-order", data);
     console.log("response", response);
-    return response.data as Order;
+    return response.data.order as Order;
   } catch (err) {
     throw new Error(err);
   }
 }
 
-// hits the create-payment-intent API endpoint to create a new Stripe payment intent and return client secret //
-// export async function createPaymentIntentApi(data: LineItem[]) {
-//   try {
-//     const response = await instance.post("create-payment-intent", data);
-//     return response.data as PaymentIntent;
-//   } catch (err) {
-//     throw new Error(err);
-//   }
-// }
