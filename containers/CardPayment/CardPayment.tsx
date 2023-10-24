@@ -67,7 +67,7 @@ const CardPayment = (props: Props) => {
       <p>
         Total:{" $"}
         {props.lineItems.reduce(
-          (total, item) => total + item.quantity * item.price,
+          (total, item) => total + item.quantity * parseFloat(item.price),
           0
         )}
       </p>

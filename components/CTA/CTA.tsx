@@ -4,8 +4,9 @@ import styled from "styled-components";
 interface Props {
   className?: string;
   children?: React.ReactNode;
-  onClickFunction: React.MouseEventHandler<HTMLButtonElement>;
+  onClickFunction?: React.MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 }
 
 const CTA = (props: Props) => {

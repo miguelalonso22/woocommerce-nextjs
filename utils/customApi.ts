@@ -42,7 +42,7 @@ export async function createOrderApi(
     console.log("response", response);
     return response.data.order as Order;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err as string);
   }
 }
 

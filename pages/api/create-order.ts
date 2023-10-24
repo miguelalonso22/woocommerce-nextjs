@@ -17,6 +17,6 @@ export default async function handler(
     const response = await createWooCommerceOrder(data);
     res.json({ order: response.data });
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error as string);
   }
 }
