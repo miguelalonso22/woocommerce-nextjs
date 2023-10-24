@@ -1,3 +1,7 @@
+// Types taken from https://github.com/rrrhys/wootoapp-rewrite/blob/master/app/types/woocommerce.d.ts //
+
+// NOTE: Some amendments made by cross-referencing with the WooCommerce REST API docs //
+
 export interface Product {
   id: number;
   name: string;
@@ -96,24 +100,24 @@ export interface MetaDatum {
   value: string;
 }
 
-interface LineItem {
-  id: number;
-  name: string;
+export interface LineItem {
+  id?: number;
+  name?: string;
   product_id: number;
-  variation_id: number;
+  variation_id?: number;
   quantity: number;
-  tax_class: string;
-  subtotal: string;
-  subtotal_tax: string;
-  total: string;
-  total_tax: string;
-  taxes: any[];
-  meta_data: MetaData[];
-  sku: string;
-  price: number;
+  tax_class?: string;
+  subtotal?: string;
+  subtotal_tax?: string;
+  total?: string;
+  total_tax?: string;
+  taxes?: any[];
+  meta_data?: MetaData[];
+  sku?: string;
+  price?: string;
 }
 
-interface ShippingLine {
+export interface ShippingLine {
   id: number;
   method_title: string;
   method_id: string;
@@ -124,13 +128,13 @@ interface ShippingLine {
   meta_data: any[];
 }
 
-interface Meta_Data_Line_Item {
+export interface Meta_Data_Line_Item {
   // built from my own object sending in, disregard if necessary!
   key: string;
   value: string;
 }
 
-interface Cart {
+export interface Cart {
   // built from my own object sending in, disregard if necessary!
   payment_method: string;
   payment_method_title: string;
@@ -200,48 +204,57 @@ export interface Customer {
 }
 
 export interface Order {
-  id: number;
-  parent_id: number;
-  number: string;
-  order_key: string;
-  created_via: string;
-  version: string;
-  status: string;
-  currency: string;
-  date_created: Date;
-  date_created_gmt: Date;
-  date_modified: Date;
-  date_modified_gmt: Date;
-  discount_total: string;
-  discount_tax: string;
-  shipping_total: string;
-  shipping_tax: string;
-  cart_tax: string;
-  total: string;
-  total_tax: string;
-  prices_include_tax: boolean;
-  customer_id: number;
-  customer_ip_address: string;
-  customer_user_agent: string;
-  customer_note: string;
-  billing: Billing;
-  shipping: Shipping;
+  id?: number;
+  parent_id?: number;
+  number?: string;
+  order_key?: string;
+  created_via?: string;
+  version?: string;
+  status?:
+    | "pending"
+    | "processing"
+    | "on-hold"
+    | "completed"
+    | "cancelled"
+    | "refunded"
+    | "failed"
+    | "trash";
+  currency?: string;
+  date_created?: Date;
+  date_created_gmt?: Date;
+  date_modified?: Date;
+  date_modified_gmt?: Date;
+  discount_total?: string;
+  discount_tax?: string;
+  shipping_total?: string;
+  shipping_tax?: string;
+  cart_tax?: string;
+  total?: string;
+  total_tax?: string;
+  prices_include_tax?: boolean;
+  customer_id?: number;
+  customer_ip_address?: string;
+  customer_user_agent?: string;
+  customer_note?: string;
+  billing?: Billing;
+  shipping?: Shipping;
   payment_method: string;
   payment_method_title: string;
-  transaction_id: string;
-  date_paid?: any;
-  date_paid_gmt?: any;
-  date_completed?: any;
-  date_completed_gmt?: any;
-  cart_hash: string;
-  meta_data: any[];
+  transaction_id?: string;
+  date_paid?: Date;
+  date_paid_gmt?: Date;
+  date_completed?: Date;
+  date_completed_gmt?: Date;
+  cart_hash?: string;
+  meta_data?: any[];
   line_items: LineItem[];
-  tax_lines: any[];
-  shipping_lines: ShippingLine[];
-  fee_lines: any[];
-  coupon_lines: any[];
-  refunds: any[];
-  _links: Links;
+  tax_lines?: any[]; // TODO define tax lines properties
+  shipping_lines?: ShippingLine[];
+  fee_lines?: any[]; // TODO define fee lines properties
+  coupon_lines?: any[]; // TODO define coupon lines properties
+  refunds?: any[]; // TODO define refunds properties
+  set_paid: boolean;
+  _links?: Links;
 }
 
 export interface Links {
