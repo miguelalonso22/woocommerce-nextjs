@@ -1,7 +1,9 @@
+import styled from "styled-components";
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
+import { Modal } from "../components";
 
 
 // Define una interface para los parámetros de la query
@@ -24,11 +26,20 @@ interface QueryParams {
 const FinalizarPedido: React.FC = () => {
     const router = useRouter();
 
+    const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [orderProcessed, setOrderProcessed] = useState(false);
+
+
     useEffect(() => {
       // Asegúrate de que todos los parámetros estén presentes antes de proceder
       if (router.isReady) {
+
         const orderKey = Cookies.get('order_key');
         const orderNumber = Cookies.get('order_number');
+
+        setIsLoading(true);
+        setError("");
 
         const params: QueryParams = {
           key:orderKey as string,
@@ -52,30 +63,71 @@ const FinalizarPedido: React.FC = () => {
         const wordpressUrl = `https://www.to2beer.com/index.php/finalizar-compra/order-received/${orderNumber}}`;
   
         // Realiza la solicitud GET para actualizar el estado del pedido en WooCommerce
-        updateOrderStatus(wordpressUrl, params);
+        //espera a que se resuelva la promesa y cambia el estado de isLoading
+
+        updateOrderStatus(wordpressUrl, params)
+          .then(() => {
+          setIsLoading(false);
+          setOrderProcessed(true);
+          })
+          .catch((error) => {
+            setError(error as string);
+            setIsLoading(false);
+          });
+
+          
+
+        
         // Eliminar las cookies después de su uso
         Cookies.remove('order_key');
         Cookies.remove('order_number');
       }
     }, [router.isReady, router.query]);
+
+    useEffect(() => {
+      if (orderProcessed) {
+        const timer = setTimeout(() => {
+          router.push("/");  // Redirects to the homepage after 2 seconds
+        }, 2000);
+
+        return () => clearTimeout(timer);  // Cleanup the timer to prevent unexpected behavior
+      }
+    }, [orderProcessed, router]);
   
     // Define la función para actualizar el estado del pedido
     const updateOrderStatus = async (url: string, params: QueryParams) => {
       try {
         const response = await axios.get(url, { params });
         console.log('Order status updated:', response.data);
+        return;
       } catch (error) {
         console.error('Error updating order status:', error);
+        setError(error as string);
+        return;
       }
     }
   return(
-    <div>
-      ¡Gracias por su compra!
-    </div>
-  );
+// if loading, show Modal with loading indicator else show orderStatus
+    <Fragment>
+      {isLoading ? (
+        <Modal message="Procesando pago..."/>
+      ) : (
+       
+          (error as string) !== "" ? (
+            <ErrorMessage>{error}</ErrorMessage>
+          ) : (
+            <Modal message="¡Gracias por tu compra!"/>
+          )
+      
+      )}  
+    </Fragment>
+  );  
 };
 
-  
+const ErrorMessage = styled.div`
+  color: #fa004f;
+  padding-top: 8px;
+`;  
   // Exporta el componente
   export default FinalizarPedido;
   
