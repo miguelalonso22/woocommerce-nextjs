@@ -37,7 +37,10 @@ const FinalizarPedido: React.FC = () => {
 
         const orderKey = Cookies.get('order_key');
         const orderNumber = Cookies.get('order_number');
-
+        if (!orderKey || !orderNumber) {
+          setError("No se encontró el pedido");
+          return;
+        }
         setIsLoading(true);
         setError("");
 
@@ -56,6 +59,17 @@ const FinalizarPedido: React.FC = () => {
           merchant_account_id: router.query.merchant_account_id as string | null,
         };
 
+        if (params.status !== "approved") {
+          setError("El pago no fue aprobado");
+          setIsLoading(false);
+          return;
+        }
+        //si no se encuentran todos los parámetros, se muestra un error
+        if (!params.key || !params.collection_id || !params.collection_status || !params.payment_id || !params.status || !params.external_reference || !params.payment_type || !params.merchant_order_id || !params.preference_id || !params.site_id || !params.processing_mode || !params.merchant_account_id) {
+          setError("No se encontraron todos los parámetros");
+          setIsLoading(false);
+          return;
+        }
 
         console.log("orderKey: ", orderKey);
         console.log("orderNumber: ", orderNumber);
@@ -74,9 +88,6 @@ const FinalizarPedido: React.FC = () => {
             setError(error as string);
             setIsLoading(false);
           });
-
-          
-
         
         // Eliminar las cookies después de su uso
         Cookies.remove('order_key');
@@ -107,7 +118,7 @@ const FinalizarPedido: React.FC = () => {
       }
     }
   return(
-// if loading, show Modal with loading indicator else show orderStatus
+// if loading, show Modal with loading indicator else if error, show error message else show success message
     <Fragment>
       {isLoading ? (
         <Modal message="Procesando pago..."/>
