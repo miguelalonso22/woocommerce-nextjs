@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import React, { Fragment, useEffect, useState } from 'react';
@@ -70,7 +71,7 @@ const FinalizarPedido: React.FC = () => {
           setOrderProcessed(true);
           })
           .catch((error) => {
-            setError(error.message);
+            setError(error as string);
             setIsLoading(false);
           });
 
@@ -109,23 +110,24 @@ const FinalizarPedido: React.FC = () => {
 // if loading, show Modal with loading indicator else show orderStatus
     <Fragment>
       {isLoading ? (
-        <Modal>
-          <p>Procesando pago...</p>
-        </Modal>
+        <Modal message="Procesando pago..."/>
       ) : (
-        <Modal>
-          {error !== "" ? (
-            <p>{error}</p>
+       
+          (error as string) !== "" ? (
+            <ErrorMessage>{error}</ErrorMessage>
           ) : (
-            <p>¡Gracias por tu compra!</p>
-          )}
-        </Modal>
+            <Modal message="¡Gracias por tu compra!"/>
+          )
+      
       )}  
     </Fragment>
   );  
 };
 
-  
+const ErrorMessage = styled.div`
+  color: #fa004f;
+  padding-top: 8px;
+`;  
   // Exporta el componente
   export default FinalizarPedido;
   
