@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Head from "next/head";
+import {SimpleSlider} from "../features/Slider/slider";
 
 import { GetStaticProps } from "next";
 import { Inter } from "next/font/google";
@@ -22,6 +23,14 @@ export default function Home({ products }: Props) {
   return (
     <NavLayout title="Menu" description="Menu page">
       <ProductGrid products={products} />
+      <div style={
+        {
+          position: "relative",
+          padding: "50px",
+        }
+      }>
+      <SimpleSlider products={products}/>
+      </div>
     </NavLayout>
   );
 }
